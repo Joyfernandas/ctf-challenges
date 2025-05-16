@@ -1,0 +1,274 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>🔐 CTF Challenge Hub | Joyfernandas</title>
+    <meta name="description" content="Interactive Capture The Flag (CTF) challenges for cybersecurity enthusiasts. Test your hacking skills!" />
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" />
+    <style>
+        :root {
+            --hacker-green: #20c20e;
+            --dark-bg: #121212;
+            --card-bg: #1e1e1e;
+            --text-light: #f0f0f0;
+            --accent-red: #ff5555;
+        }
+        
+        body {
+            font-family: 'Courier New', monospace;
+            background-color: var(--dark-bg);
+            color: var(--text-light);
+            line-height: 1.6;
+            margin: 0;
+            padding: 0;
+        }
+        
+        .container {
+            max-width: 900px;
+            margin: 0 auto;
+            padding: 2rem;
+        }
+        
+        header {
+            text-align: center;
+            margin-bottom: 2rem;
+            border-bottom: 1px dashed var(--hacker-green);
+            padding-bottom: 1rem;
+        }
+        
+        h1 {
+            color: var(--hacker-green);
+            font-size: 2.5rem;
+            margin: 0;
+        }
+        
+        h2 {
+            color: var(--accent-red);
+            border-left: 4px solid var(--hacker-green);
+            padding-left: 10px;
+            margin-top: 2rem;
+        }
+        
+        .challenge-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+            gap: 1.5rem;
+            margin-top: 1rem;
+        }
+        
+        .challenge-card {
+            background: var(--card-bg);
+            border: 1px solid #333;
+            border-radius: 5px;
+            padding: 1.5rem;
+            transition: transform 0.3s, box-shadow 0.3s;
+            position: relative;
+            overflow: hidden;
+        }
+        
+        .challenge-card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 5px 15px rgba(32, 194, 14, 0.2);
+            border-color: var(--hacker-green);
+        }
+        
+        .challenge-card::before {
+            content: "";
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 3px;
+            background: linear-gradient(90deg, var(--hacker-green), var(--accent-red));
+        }
+        
+        .challenge-card h3 {
+            margin-top: 0;
+            color: var(--hacker-green);
+        }
+        
+        .difficulty {
+            display: inline-block;
+            padding: 0.2rem 0.5rem;
+            border-radius: 3px;
+            font-size: 0.8rem;
+            font-weight: bold;
+            margin-bottom: 0.5rem;
+        }
+        
+        .easy { background: #2e7d32; color: white; }
+        .medium { background: #ff8f00; color: black; }
+        .hard { background: #c62828; color: white; }
+        
+        .challenge-card a {
+            color: var(--text-light);
+            text-decoration: none;
+            font-weight: bold;
+            display: inline-block;
+            margin-top: 1rem;
+        }
+        
+        .challenge-card a:hover {
+            color: var(--hacker-green);
+            text-decoration: underline;
+        }
+        
+        .challenge-card a::after {
+            content: " →";
+            transition: transform 0.3s;
+        }
+        
+        .challenge-card a:hover::after {
+            transform: translateX(3px);
+        }
+        
+        footer {
+            text-align: center;
+            margin-top: 3rem;
+            padding-top: 1rem;
+            border-top: 1px dashed var(--hacker-green);
+            color: #777;
+        }
+        
+        .social-links {
+            margin-top: 1rem;
+        }
+        
+        .social-links a {
+            color: #777;
+            margin: 0 0.5rem;
+            font-size: 1.2rem;
+            transition: color 0.3s;
+        }
+        
+        .social-links a:hover {
+            color: var(--hacker-green);
+        }
+        
+        /* Terminal-like animation */
+        @keyframes blink {
+            0%, 100% { opacity: 1; }
+            50% { opacity: 0; }
+        }
+        
+        .cursor {
+            display: inline-block;
+            width: 10px;
+            height: 1em;
+            background: var(--hacker-green);
+            animation: blink 1s step-end infinite;
+            vertical-align: middle;
+            margin-left: 3px;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <header>
+            <h1>🔐 CTF Challenge Hub<span class="cursor"></span></h1>
+            <p>Test your cybersecurity skills with these interactive challenges</p>
+        </header>
+
+        <section>
+            <h2><i class="fas fa-globe"></i> Web Security Challenges</h2>
+            <div class="challenge-grid">
+                <div class="challenge-card">
+                    <span class="difficulty easy">EASY</span>
+                    <h3>Hidden Flag in Source</h3>
+                    <p>Can you find the secret flag hidden in the webpage's source code?</p>
+                    <a href="challenges/web/easy/hidden-flag/index.html">Start Challenge</a>
+                </div>
+                
+                <div class="challenge-card">
+                    <span class="difficulty medium">MEDIUM</span>
+                    <h3>SQL Injection Login</h3>
+                    <p>Bypass authentication using SQL injection techniques.</p>
+                    <a href="challenges/web/medium/sqli-login/index.html">Start Challenge</a>
+                </div>
+                
+                <div class="challenge-card">
+                    <span class="difficulty hard">HARD</span>
+                    <h3>JWT Token Forgery</h3>
+                    <p>Forge a valid JWT token to gain admin access.</p>
+                    <a href="challenges/web/hard/jwt-bypass/index.html">Start Challenge</a>
+                </div>
+            </div>
+        </section>
+
+        <section>
+            <h2><i class="fas fa-network-wired"></i> Network Challenges</h2>
+            <div class="challenge-grid">
+                <div class="challenge-card">
+                    <span class="difficulty easy">EASY</span>
+                    <h3>TCP Dump Analysis</h3>
+                    <p>Analyze network traffic to find the hidden credentials.</p>
+                    <a href="challenges/network/tcp-dump/index.html">Start Challenge</a>
+                </div>
+                
+                <div class="challenge-card">
+                    <span class="difficulty medium">MEDIUM</span>
+                    <h3>ARP Spoofing Detection</h3>
+                    <p>Identify signs of ARP cache poisoning in a network capture.</p>
+                    <a href="challenges/network/arp-spoofing/index.html">Coming Soon</a>
+                </div>
+            </div>
+        </section>
+
+        <section>
+            <h2><i class="fas fa-puzzle-piece"></i> Miscellaneous Challenges</h2>
+            <div class="challenge-grid">
+                <div class="challenge-card">
+                    <span class="difficulty easy">EASY</span>
+                    <h3>Base64 Encoded Flag</h3>
+                    <p>Decode multiple layers of encoding to reveal the flag.</p>
+                    <a href="challenges/misc/base64-flag/index.html">Start Challenge</a>
+                </div>
+                
+                <div class="challenge-card">
+                    <span class="difficulty medium">MEDIUM</span>
+                    <h3>Steganography</h3>
+                    <p>Find the hidden message in an innocent-looking image.</p>
+                    <a href="challenges/misc/steganography/index.html">Coming Soon</a>
+                </div>
+            </div>
+        </section>
+
+        <footer>
+            <p>Made with <span style="color: var(--accent-red);">♥</span> by @Joyfernandas</p>
+            <div class="social-links">
+                <a href="https://github.com/Joyfernandas" target="_blank" title="GitHub"><i class="fab fa-github"></i></a>
+                <a href="https://twitter.com/Joyfernandas" target="_blank" title="Twitter"><i class="fab fa-twitter"></i></a>
+                <a href="https://linkedin.com/in/Joyfernandas" target="_blank" title="LinkedIn"><i class="fab fa-linkedin"></i></a>
+                <a href="https://tryhackme.com/p/Joyfernandas" target="_blank" title="TryHackMe"><i class="fas fa-flag"></i></a>
+            </div>
+            <p><small>Found a bug? <a href="mailto:joy@example.com" style="color: var(--hacker-green);">Report it!</a></small></p>
+        </footer>
+    </div>
+
+    <script>
+        // Simple typewriter effect for the title
+        document.addEventListener('DOMContentLoaded', function() {
+            const title = document.querySelector('h1');
+            const originalText = title.textContent.replace('🔐 ', '').replace(/\s+/g, ' ').trim();
+            title.innerHTML = '🔐 ';
+            
+            let i = 0;
+            const speed = 100; // typing speed in ms
+            
+            function typeWriter() {
+                if (i < originalText.length) {
+                    title.innerHTML += originalText.charAt(i);
+                    i++;
+                    setTimeout(typeWriter, speed);
+                } else {
+                    // Add the cursor after typing is done
+                    title.innerHTML += '<span class="cursor"></span>';
+                }
+            }
+            
+            setTimeout(typeWriter, 1000);
+        });
+    </script>
+</body>
+</html>

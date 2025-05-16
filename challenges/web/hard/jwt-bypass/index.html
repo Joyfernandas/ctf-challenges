@@ -1,0 +1,186 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>🔐 Advanced JWT Bypass Challenge</title>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/crypto-js/4.1.1/crypto-js.min.js"></script>
+    <style>
+        :root {
+            --hacker-green: #20c20e;
+            --dark-bg: #121212;
+            --card-bg: #1e1e1e;
+            --accent-red: #ff5555;
+        }
+        
+        body {
+            font-family: 'Courier New', monospace;
+            background-color: var(--dark-bg);
+            color: white;
+            max-width: 800px;
+            margin: 0 auto;
+            padding: 2rem;
+            line-height: 1.6;
+        }
+        
+        h1 {
+            color: var(--hacker-green);
+            border-bottom: 1px dashed var(--hacker-green);
+            padding-bottom: 0.5rem;
+        }
+        
+        .container {
+            background-color: var(--card-bg);
+            border: 1px solid #333;
+            border-radius: 5px;
+            padding: 2rem;
+            margin-top: 2rem;
+        }
+        
+        code {
+            display: block;
+            background-color: #2a2a2a;
+            padding: 1rem;
+            border-radius: 5px;
+            overflow-x: auto;
+            margin: 1rem 0;
+            font-size: 0.9rem;
+        }
+        
+        input {
+            width: 100%;
+            padding: 0.8rem;
+            margin: 1rem 0;
+            background-color: #2a2a2a;
+            border: 1px solid #444;
+            color: white;
+            font-family: inherit;
+        }
+        
+        button {
+            background-color: var(--hacker-green);
+            color: black;
+            border: none;
+            padding: 0.8rem 1.5rem;
+            font-family: inherit;
+            font-weight: bold;
+            cursor: pointer;
+            transition: all 0.3s;
+        }
+        
+        button:hover {
+            background-color: #1ab10a;
+        }
+        
+        #result {
+            margin-top: 1.5rem;
+            padding: 1rem;
+            border-radius: 5px;
+            display: none;
+        }
+        
+        .success {
+            background-color: rgba(32, 194, 14, 0.2);
+            border-left: 3px solid var(--hacker-green);
+            color: var(--hacker-green);
+        }
+        
+        .error {
+            background-color: rgba(255, 85, 85, 0.2);
+            border-left: 3px solid var(--accent-red);
+            color: var(--accent-red);
+        }
+        
+        .hint {
+            background-color: rgba(32, 194, 14, 0.1);
+            border-left: 3px solid var(--hacker-green);
+            padding: 0.8rem;
+            margin: 1.5rem 0;
+            font-size: 0.9rem;
+            display: none;
+        }
+        
+        .difficulty {
+            display: inline-block;
+            padding: 0.3rem 0.8rem;
+            background-color: #c62828;
+            color: white;
+            border-radius: 3px;
+            font-weight: bold;
+            font-size: 0.8rem;
+            margin-left: 1rem;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>🔐 Advanced JWT Bypass Challenge <span class="difficulty">HARD</span></h1>
+        <p>Your task is to forge a JWT token to gain admin access. This challenge implements multiple security layers.</p>
+
+        <h2>Current Session Token</h2>
+        <code id="tokenDisplay">Loading...</code>
+
+        <h3>Token Analysis</h3>
+        <div id="tokenAnalysis">Decoding token...</div>
+
+        <h2>Token Forger</h2>
+        <input type="text" id="tokenInput" placeholder="Paste your modified JWT token here..." autocomplete="off">
+        <button onclick="attemptForgedLogin()">Submit Forged Token</button>
+
+        <div id="result"></div>
+
+        <div class="hint" id="hint1">
+            <strong>Hint 1:</strong> The system uses multiple validation checks. You'll need to bypass all of them.
+        </div>
+        
+        <div class="hint" id="hint2">
+            <strong>Hint 2:</strong> The server checks for token expiration and validates the signing algorithm.
+        </div>
+        
+        <div class="hint" id="hint3">
+            <strong>Hint 3:</strong> The system rejects tokens with timestamps older than 5 minutes.
+        </div>
+
+        <p>
+            <a href="#" onclick="showHint(1)" id="hintBtn1">Show Hint 1</a> | 
+            <a href="#" onclick="showHint(2)" id="hintBtn2">Show Hint 2</a> | 
+            <a href="#" onclick="showHint(3)" id="hintBtn3">Show Hint 3</a>
+        </p>
+    </div>
+
+    <script src="auth.js"></script>
+    <script>
+        // Display the initial token
+        document.addEventListener('DOMContentLoaded', function() {
+            const initialToken = generateInitialToken();
+            document.getElementById('tokenDisplay').textContent = initialToken;
+            analyzeToken(initialToken);
+            
+            // Console warning
+            console.log("%c⚠️ Advanced JWT Challenge", "color: #ff5555; font-size: 14px; font-weight: bold;");
+            console.log("%cThis challenge implements multiple security checks. You'll need to bypass them all.", "color: #777;");
+        });
+
+        function showHint(num) {
+            document.getElementById(`hint${num}`).style.display = 'block';
+            document.getElementById(`hintBtn${num}`).style.display = 'none';
+        }
+
+        function analyzeToken(token) {
+            const decoded = decodeToken(token);
+            if (!decoded) {
+                document.getElementById('tokenAnalysis').innerHTML = '❌ Invalid token format';
+                return;
+            }
+
+            let analysis = `
+                <strong>Header:</strong> <code>${JSON.stringify(decoded.header, null, 2)}</code><br>
+                <strong>Payload:</strong> <code>${JSON.stringify(decoded.payload, null, 2)}</code><br>
+                <strong>Signature:</strong> ${token.split('.')[2].substring(0, 10)}...<br><br>
+            `;
+
+            document.getElementById('tokenAnalysis').innerHTML = analysis;
+        }
+    </script>
+</body>
+</html>

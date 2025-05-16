@@ -1,0 +1,216 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>🔐 SQL Injection Challenge | CTF</title>
+    <style>
+        :root {
+            --hacker-green: #20c20e;
+            --dark-bg: #121212;
+            --card-bg: #1e1e1e;
+            --accent-red: #ff5555;
+        }
+        
+        body {
+            font-family: 'Courier New', monospace;
+            background-color: var(--dark-bg);
+            color: white;
+            max-width: 800px;
+            margin: 0 auto;
+            padding: 2rem;
+        }
+        
+        h1 {
+            color: var(--hacker-green);
+            border-bottom: 1px dashed var(--hacker-green);
+            padding-bottom: 0.5rem;
+        }
+        
+        .login-box {
+            background-color: var(--card-bg);
+            border: 1px solid #333;
+            border-radius: 5px;
+            padding: 2rem;
+            margin-top: 2rem;
+            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.3);
+        }
+        
+        input {
+            display: block;
+            width: 100%;
+            padding: 0.8rem;
+            margin: 1rem 0;
+            background-color: #2a2a2a;
+            border: 1px solid #444;
+            color: white;
+            font-family: inherit;
+        }
+        
+        button {
+            background-color: var(--hacker-green);
+            color: black;
+            border: none;
+            padding: 0.8rem 1.5rem;
+            font-family: inherit;
+            font-weight: bold;
+            cursor: pointer;
+            transition: all 0.3s;
+            margin-top: 1rem;
+        }
+        
+        button:hover {
+            background-color: #1ab10a;
+        }
+        
+        #result {
+            margin-top: 1.5rem;
+            padding: 1rem;
+            border-radius: 5px;
+            display: none;
+        }
+        
+        .success {
+            background-color: rgba(32, 194, 14, 0.2);
+            border-left: 3px solid var(--hacker-green);
+            color: var(--hacker-green);
+        }
+        
+        .error {
+            background-color: rgba(255, 85, 85, 0.2);
+            border-left: 3px solid var(--accent-red);
+            color: var(--accent-red);
+        }
+        
+        .hint {
+            background-color: rgba(32, 194, 14, 0.1);
+            border-left: 3px solid var(--hacker-green);
+            padding: 0.8rem;
+            margin: 1.5rem 0;
+            font-size: 0.9rem;
+            display: none;
+        }
+        
+        .difficulty {
+            display: inline-block;
+            padding: 0.3rem 0.8rem;
+            background-color: #ff8f00;
+            color: black;
+            border-radius: 3px;
+            font-weight: bold;
+            font-size: 0.8rem;
+            margin-left: 1rem;
+        }
+    </style>
+</head>
+<body>
+    <h1>🔐 SQL Injection Challenge <span class="difficulty">MEDIUM</span></h1>
+    <p>Bypass the login form using SQL injection techniques.</p>
+    
+    <div class="login-box">
+        <h2>Admin Portal Login</h2>
+        <p>Welcome to the (fake) company admin portal. Try to login without valid credentials.</p>
+        
+        <input id="username" type="text" placeholder="Username" autocomplete="off">
+        <input id="password" type="password" placeholder="Password" autocomplete="off">
+        <button onclick="attemptLogin()">Login</button>
+        
+        <div id="result"></div>
+        
+        <div class="hint" id="hint1">
+            <strong>Hint 1:</strong> The application concatenates user input directly into a SQL query.
+        </div>
+        
+        <div class="hint" id="hint2">
+            <strong>Hint 2:</strong> Try terminating the username field with a single quote (').
+        </div>
+        
+        <div class="hint" id="hint3">
+            <strong>Hint 3:</strong> Classic payload: <code>' OR '1'='1</code> as username (leave password empty)
+        </div>
+        
+        <p>
+            <a href="#" onclick="showHint(1)" id="hintBtn1">Show Hint 1</a> | 
+            <a href="#" onclick="showHint(2)" id="hintBtn2">Show Hint 2</a> | 
+            <a href="#" onclick="showHint(3)" id="hintBtn3">Show Hint 3</a>
+        </p>
+    </div>
+    
+    <script>
+        function attemptLogin() {
+            const username = document.getElementById("username").value;
+            const password = document.getElementById("password").value;
+            const resultDiv = document.getElementById("result");
+            
+            // Simulate vulnerable query construction
+            const query = `SELECT * FROM users WHERE username='${username}' AND password='${password}'`;
+            
+            // Check for successful injection patterns
+            const injectionPatterns = [
+                /' OR '1'='1/, 
+                /'--/, 
+                /'\/\*.*\*\//,
+                /'=/
+            ];
+            
+            let isInjected = false;
+            injectionPatterns.forEach(pattern => {
+                if (pattern.test(username) || pattern.test(password)) {
+                    isInjected = true;
+                }
+            });
+            
+            // Display result
+            if (isInjected) {
+                resultDiv.className = "success";
+                resultDiv.innerHTML = `
+                    <h3>🔓 Authentication Bypassed!</h3>
+                    <p>Flag: <strong>CTF{sqli_bypass_success}</strong></p>
+                    <p>Your payload manipulated the SQL query to:</p>
+                    <code>${highlightInjection(query)}</code>
+                `;
+            } else {
+                resultDiv.className = "error";
+                resultDiv.innerHTML = `
+                    ❌ Login failed. The system executed:<br>
+                    <code>${escapeHtml(query)}</code>
+                `;
+            }
+            
+            resultDiv.style.display = "block";
+            
+            // Debug output
+            console.log("[DEBUG] Simulated query:", query);
+            if (isInjected) {
+                console.log("%cSuccessful injection detected!", "color: green");
+            }
+        }
+        
+        function highlightInjection(query) {
+            return escapeHtml(query)
+                .replace(/' OR '1'='1/g, "<span style='color:var(--hacker-green)'>' OR '1'='1</span>")
+                .replace(/'--/g, "<span style='color:var(--hacker-green)'>'--</span>");
+        }
+        
+        function escapeHtml(unsafe) {
+            return unsafe
+                .replace(/&/g, "&amp;")
+                .replace(/</g, "&lt;")
+                .replace(/>/g, "&gt;")
+                .replace(/"/g, "&quot;")
+                .replace(/'/g, "&#039;");
+        }
+        
+        function showHint(num) {
+            document.getElementById(`hint${num}`).style.display = 'block';
+            document.getElementById(`hintBtn${num}`).style.display = 'none';
+        }
+        
+        // Easter egg - console warning
+        console.log("%c⚠️ Warning: This is a simulated SQL injection challenge for educational purposes only.", 
+                   "color: #ff5555; font-weight: bold;");
+        console.log("%cNever test SQL injection on real websites without permission!", 
+                   "color: #ff8f00;");
+    </script>
+</body>
+</html>

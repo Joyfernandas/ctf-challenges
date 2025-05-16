@@ -1,0 +1,130 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>🕵️ TCP Dump Analysis Challenge</title>
+    <style>
+        :root {
+            --hacker-green: #20c20e;
+            --dark-bg: #121212;
+            --card-bg: #1e1e1e;
+            --accent-blue: #5555ff;
+        }
+        
+        body {
+            font-family: 'Courier New', monospace;
+            background-color: var(--dark-bg);
+            color: white;
+            max-width: 800px;
+            margin: 0 auto;
+            padding: 2rem;
+            line-height: 1.6;
+        }
+        
+        h1 {
+            color: var(--hacker-green);
+            border-bottom: 1px dashed var(--hacker-green);
+            padding-bottom: 0.5rem;
+        }
+        
+        .container {
+            background-color: var(--card-bg);
+            border: 1px solid #333;
+            border-radius: 5px;
+            padding: 2rem;
+            margin-top: 2rem;
+        }
+        
+        a.download-btn {
+            display: inline-block;
+            background-color: var(--accent-blue);
+            color: white;
+            padding: 0.8rem 1.5rem;
+            text-decoration: none;
+            border-radius: 5px;
+            font-weight: bold;
+            margin: 1rem 0;
+            transition: all 0.3s;
+        }
+        
+        a.download-btn:hover {
+            background-color: #4444ee;
+        }
+        
+        .hint {
+            background-color: rgba(32, 194, 14, 0.1);
+            border-left: 3px solid var(--hacker-green);
+            padding: 0.8rem;
+            margin: 1.5rem 0;
+            font-size: 0.9rem;
+            display: none;
+        }
+        
+        .fake-terminal {
+            background-color: black;
+            color: var(--hacker-green);
+            padding: 1rem;
+            border-radius: 5px;
+            font-family: monospace;
+            margin: 1rem 0;
+            overflow-x: auto;
+        }
+        
+        .difficulty {
+            display: inline-block;
+            padding: 0.3rem 0.8rem;
+            background-color: #2e7d32;
+            color: white;
+            border-radius: 3px;
+            font-weight: bold;
+            font-size: 0.8rem;
+            margin-left: 1rem;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>📡 Network Forensic Challenge <span class="difficulty">MEDIUM</span></h1>
+        <p>Analyze this packet capture to find the hidden flag.</p>
+        
+        <a href="suspicious_traffic.pcap" class="download-btn">
+            <i class="fas fa-download"></i> Download PCAP File
+        </a>
+        
+        <h2>Challenge Details</h2>
+        <ul>
+            <li>Flag format: <code>CTF{something_here}</code></li>
+            <li>The flag is hidden in network traffic</li>
+            <li>You'll need Wireshark or tcpdump</li>
+        </ul>
+        
+        <div class="fake-terminal">
+            $ tcpdump -r suspicious_traffic.pcap | grep -i "CTF"<br>
+            reading from file suspicious_traffic.pcap, link-type EN10MB (Ethernet)<br>
+            12:34:56.789 IP 192.168.1.100.54321 > 10.0.0.2.80: Flags [P.], seq 1:100, ack 1, win 8192, length 99
+        </div>
+        
+        <div class="hint" id="hint1">
+            <strong>Hint 1:</strong> Look for unusual protocols in the capture
+        </div>
+        
+        <div class="hint" id="hint2">
+            <strong>Hint 2:</strong> Check DNS queries carefully
+        </div>
+        
+        <div class="hint" id="hint3">
+            <strong>Hint 3:</strong> The flag is split across multiple packets
+        </div>
+        
+        <p>
+            <a href="#" onclick="document.getElementById('hint1').style.display='block';this.style.display='none'" id="hintBtn1">Show Hint 1</a> | 
+            <a href="#" onclick="document.getElementById('hint2').style.display='block';this.style.display='none'" id="hintBtn2">Show Hint 2</a> | 
+            <a href="#" onclick="document.getElementById('hint3').style.display='block';this.style.display='none'" id="hintBtn3">Show Hint 3</a>
+        </p>
+    </div>
+
+    <!-- Include Font Awesome for icons -->
+    <script src="https://kit.fontawesome.com/a076d05399.js" crossorigin="anonymous"></script>
+</body>
+</html>

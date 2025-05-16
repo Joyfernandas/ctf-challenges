@@ -1,0 +1,136 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>🔍 Hidden Flag Challenge | CTF</title>
+    <style>
+        body {
+            font-family: 'Courier New', monospace;
+            background-color: #0a0a0a;
+            color: #20c20e;
+            max-width: 800px;
+            margin: 0 auto;
+            padding: 2rem;
+            line-height: 1.6;
+        }
+        
+        h1 {
+            border-bottom: 1px dashed #20c20e;
+            padding-bottom: 0.5rem;
+            display: inline-block;
+        }
+        
+        .container {
+            background-color: #121212;
+            border: 1px solid #333;
+            border-radius: 5px;
+            padding: 2rem;
+            margin-top: 2rem;
+            position: relative;
+            overflow: hidden;
+        }
+        
+        .container::before {
+            content: "SECURITY-TESTING-ENVIRONMENT";
+            position: absolute;
+            top: 10px;
+            right: 10px;
+            font-size: 0.7rem;
+            color: rgba(32, 194, 14, 0.3);
+        }
+        
+        .hint {
+            background-color: rgba(32, 194, 14, 0.1);
+            border-left: 3px solid #20c20e;
+            padding: 0.8rem;
+            margin: 1.5rem 0;
+            font-size: 0.9rem;
+            display: none;
+        }
+        
+        button {
+            background-color: #1e1e1e;
+            color: #20c20e;
+            border: 1px solid #20c20e;
+            padding: 0.5rem 1rem;
+            font-family: inherit;
+            cursor: pointer;
+            margin-top: 1rem;
+            transition: all 0.3s;
+        }
+        
+        button:hover {
+            background-color: #20c20e;
+            color: #0a0a0a;
+        }
+        
+        #hintBtn {
+            background: none;
+            border: none;
+            color: #555;
+            text-decoration: underline;
+            cursor: pointer;
+            padding: 0;
+            font-size: 0.8rem;
+        }
+        
+        #hintBtn:hover {
+            color: #20c20e;
+        }
+        
+        /* Hidden fake flag to throw off scanners */
+        .fake-flag {
+            position: absolute;
+            left: -9999px;
+            color: transparent;
+        }
+    </style>
+</head>
+<body>
+    <h1>🕵️‍♂️ Find the Hidden Flag!</h1>
+    <p>This is an easy web challenge. Try looking around...</p>
+    
+    <div class="container">
+        <p>Welcome to your first CTF challenge! This page contains a secret flag hidden somewhere.</p>
+        <p><strong>Rules:</strong></p>
+        <ul>
+            <li>The flag format is <code>CTF{s0m3_t3xt_h3r3}</code></li>
+            <li>No brute-forcing needed</li>
+            <li>Flag is in this page</li>
+        </ul>
+        
+        <button onclick="alert('Think like a hacker - where do developers hide secrets?')">Need a nudge?</button>
+        
+        <div class="hint" id="hint1">
+            <strong>Hint 1:</strong> Web pages are made of more than what you see in the browser.
+        </div>
+        
+        <p><a id="hintBtn" onclick="document.getElementById('hint1').style.display='block';this.style.display='none'">Show Hint</a></p>
+        
+        <!-- Fake flag to distract automated scanners -->
+        <div class="fake-flag">CTF{this_is_not_the_real_flag}</div>
+    </div>
+    
+    <!-- 
+        ===========================================
+        REAL FLAG FOR THE CHALLENGE (remove this comment)
+        CTF{y0u_f0und_m3_in_th3_s0urc3}
+        ===========================================
+    -->
+    
+    <script>
+        // Easter egg - console message
+        console.log("%c🔍 Psst... checking the console? Smart! But the flag isn't here.", 
+                   "color: #20c20e; font-size: 14px;");
+        console.log("%cTry another approach! (Hint: Right-click → View Page Source)", 
+                   "color: #777;");
+        
+        // Track time to solve
+        const startTime = new Date();
+        window.addEventListener('load', function() {
+            console.log("Challenge started at: " + startTime.toLocaleTimeString());
+        });
+    </script>
+</body>
+</html>
